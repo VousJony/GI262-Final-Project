@@ -10,7 +10,8 @@ public class Enemy : MonoBehaviour
     [SerializeField] private float health;
 
     [Header("Movement")]
-    [SerializeField] private float moveSpeed = 1f;
+    [SerializeField] private float moveHowFar = 1f;
+    [SerializeField] private float moveDelay = 1f;
 
     [Header("Attack")]
     [SerializeField] private float attackDamage = 10f;
@@ -62,15 +63,25 @@ public class Enemy : MonoBehaviour
         Destroy(gameObject);
     }
 
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        Character character = collision.GetComponent<Character>();
+        if (character != null)
+        {
+            character.TakeDamage(attackDamage);
+            Die();
+        }
+
+    }
+
     private IEnumerator Move()
     {
         while (transform.position.y > -5f)
         {
-            transform.position = new Vector2(transform.position.x,transform.position.y - moveSpeed);
-            yield return new WaitForSecondsRealtime(1f);
+            transform.position = new Vector2(transform.position.x,transform.position.y - moveHowFar);
+            yield return new WaitForSeconds(moveDelay);
         }
-        Character.instance.TakeDamage(attackDamage);
-        Destroy(gameObject);
+
     }
 
 }
