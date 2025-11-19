@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9d42423865b19341a5ade21c73f6a2f, type: 3}
+  m_Name: Handgun SO
+  m_EditorClassIdentifier: Assembly-CSharp::EquipmentData
+  equipmentName: Handgun
+  icon: {fileID: 21300000, guid: 256d17aa8ba616d40a51ef7d259d50e4, type: 3}
+  statusBonus:
+    attack: 20
+    defense: 0
+    critChance: 20
+    rpm: 60
+    angle: 0
+    projectileSpeed: 20
+    moveSpeed: 0
+  projectilesPerShot: 1
+  bulletPrefabOverride: {fileID: 9010501137127133766, guid: 8b5244dadcb250f4b96bebbcb01a97a2, type: 3}

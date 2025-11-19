@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
@@ -19,6 +19,14 @@ public class Enemy : MonoBehaviour
     [Header("Drop")]
     [SerializeField] private int score = 10;
     [SerializeField] private int dropExp = 20;
+
+    [Header("Drop Config (For Boss)")]
+    [Tooltip("โอกาสดรอป (0-100%)")]
+    [Range(0, 100)]
+    [SerializeField] private float dropChance = 100f;
+
+    [Tooltip("Prefab ของ Item ที่จะดรอป (ใส่ EquipmentData ไว้ใน Prefab นั้นเลย)")]
+    [SerializeField] private GameObject pickupPrefab;
 
     private Rigidbody2D rb;
     private Collider2D col;
@@ -52,36 +60,59 @@ public class Enemy : MonoBehaviour
 
     private void Defeat()
     {
-        Character.instance.AddScore(score);
-        Character.instance.AddExp(dropExp);
-        GameManager.instance.UpdateWaveProgress();
+        if (Character.instance != null)
+        {
+            Character.instance.AddScore(score);
+            Character.instance.AddExp(dropExp);
+        }
+
+        TryDropItem();
+
         Die();
+    }
+
+    private void TryDropItem()
+    {
+        // เช็คแค่ Prefab อย่างเดียว
+        if (pickupPrefab != null)
+        {
+            float randomValue = Random.Range(0f, 100f);
+            if (randomValue <= dropChance)
+            {
+                // สร้างของตกที่ตำแหน่งศัตรู (Prefab จัดการตัวเองต่อใน Start)
+                Instantiate(pickupPrefab, transform.position, Quaternion.identity);
+            }
+        }
     }
 
     private void Die()
     {
+        if (GameManager.instance != null)
+        {
+            GameManager.instance.UpdateWaveProgress();
+        }
         Destroy(gameObject);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Character character = collision.GetComponent<Character>();
-        if (character != null)
+        if (collision.TryGetComponent<Character>(out Character character))
         {
             character.TakeDamage(attackDamage);
             Die();
         }
-
     }
 
     private IEnumerator Move()
     {
-        while (transform.position.y > -5f)
+        WaitForSeconds wait = new WaitForSeconds(moveDelay);
+
+        while (transform.position.y > -6f)
         {
-            transform.position = new Vector2(transform.position.x,transform.position.y - moveHowFar);
-            yield return new WaitForSeconds(moveDelay);
+            transform.position = new Vector2(transform.position.x, transform.position.y - moveHowFar);
+            yield return wait;
         }
 
+        Die();
     }
-
 }
