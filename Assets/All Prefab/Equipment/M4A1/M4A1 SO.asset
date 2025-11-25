@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EquipmentData
   equipmentName: M4A1
   icon: {fileID: 21300000, guid: 846a1289b14fc8f4e84ba7ce70c3c8fd, type: 3}
+  duration: 10
   statusBonus:
     attack: 60
     defense: 0
@@ -24,3 +25,6 @@ MonoBehaviour:
     moveSpeed: 0
   projectilesPerShot: 1
   bulletPrefabOverride: {fileID: 9010501137127133766, guid: da73e809e23eda14894c4f93beff6aec, type: 3}
+  isLoopingSFX: 1
+  shootSFXOverride: {fileID: 8300000, guid: c3a51195edb3a804fa793ac353a5f248, type: 3}
+  muzzleFlashVFX: {fileID: 0}

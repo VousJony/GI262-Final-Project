@@ -14,13 +14,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EquipmentData
   equipmentName: M870
   icon: {fileID: 21300000, guid: 423140b922bc3d0498f6225de7c634b1, type: 3}
+  duration: 12
   statusBonus:
     attack: 25
     defense: 0
     critChance: 30
-    rpm: 30
+    rpm: 45
     angle: 15
     projectileSpeed: 20
     moveSpeed: 0
   projectilesPerShot: 5
   bulletPrefabOverride: {fileID: 9010501137127133766, guid: e419285887800a346bbc4334192f3146, type: 3}
+  shootSFXOverride: {fileID: 8300000, guid: 01ec2b5c85af019448f7768c3888cfa3, type: 3}
+  muzzleFlashVFX: {fileID: 0}

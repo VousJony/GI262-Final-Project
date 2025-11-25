@@ -4,19 +4,25 @@
 public class EquipmentData : ScriptableObject
 {
     public string equipmentName;
-    public Sprite icon; // เผื่อใช้แสดงใน UI
+    public Sprite icon;
+
+    [Header("Duration Settings")]
+    [Tooltip("วินาที (ใส่ 0 หรือน้อยกว่า = อาวุธถาวร)")]
+    public float duration = 10f;
 
     [Header("Bonus Stats")]
     public Status statusBonus;
 
-    [Header("Special Settings")]
-    [Tooltip("จำนวนกระสุนที่ยิงออกไปต่อ 1 นัด (เช่น ลูกซอง = 5)")]
+    [Header("Combat Specs")]
     public int projectilesPerShot = 1;
-
-    [Tooltip("Prefab กระสุนเฉพาะของปืนนี้ (ถ้าไม่ใส่จะใช้ Default ของตัวละคร)")]
     public GameObject bulletPrefabOverride;
 
-    // ฟังก์ชันตาม Diagram (แต่เราดึงจากตัวแปร statusBonus โดยตรงได้เลย)
+    [Header("Audio & Visuals")]
+    [Tooltip("เปิดถ้าต้องการเสียงแบบ Loop (เช่นปืนกล)")]
+    public bool isLoopingSFX;
+    public AudioClip shootSFXOverride;
+    public GameObject muzzleFlashVFX;
+
     public Status GetStatusBonus()
     {
         return statusBonus;
