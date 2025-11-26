@@ -80,7 +80,7 @@ SpriteRenderer:
   m_SortingLayerID: -1440001051
   m_SortingLayer: 4
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 4c948e4d77bcedc4ba2021391c05265c, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 400a0888c7b76b54392044a059debcdf, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -101,7 +101,7 @@ Animator:
   m_GameObject: {fileID: 5354882014692408683}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 387323ab9e952994fba894f0fd959c17, type: 2}
+  m_Controller: {fileID: 9100000, guid: 367b94fc11ec18d43b7874e324f89e00, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -126,9 +126,9 @@ GameObject:
   - component: {fileID: 8074597644105774375}
   - component: {fileID: -7144117380096108926}
   m_Layer: 0
-  m_Name: Enemy 2 Flash Zombie
+  m_Name: Flash Zombie LV1
   m_TagString: Enemy
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: 3936346786652291628, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -223,8 +223,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5730228aa123bff4a8eb2cfd33262945, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Enemy
-  maxHealth: 75
-  moveSpeed: 2
+  maxHealth: 50
+  moveSpeed: 2.1
   dodgeSpeed: 4.5
   xBoundary: 2.5
   detectionRange: 2
@@ -232,12 +232,20 @@ MonoBehaviour:
   obstacleLayer:
     serializedVersion: 2
     m_Bits: 128
-  attackDamage: 15
-  score: 15
+  attackDamage: 10
+  score: 35
   dropExp: 5
-  dropChance: 0
-  lootTable: []
+  dropChance: 3
+  lootTable:
+  - itemPrefab: {fileID: 3099369955524371588, guid: ce5acf36cc6b2b948ba96488fb6fe40c, type: 3}
+    weight: 10
+  - itemPrefab: {fileID: 5918042482949317896, guid: 64aff466322b88448a156d9abe9ddfbe, type: 3}
+    weight: 10
+  - itemPrefab: {fileID: 6521485264876309251, guid: aa17cd81b53c1824cac0c38c46770d21, type: 3}
+    weight: 10
+  - itemPrefab: {fileID: 1149558649007329183, guid: 01ae4b320a506a246ba73e1122fe80ea, type: 3}
+    weight: 10
   deathVFX: {fileID: 0}
-  hitVFX: {fileID: 0}
-  deathSFX: {fileID: 0}
-  hitSFX: {fileID: 0}
+  hitVFX: {fileID: 3350099676499569759, guid: 96d41f381fcaeae4c99ca4e45546fb72, type: 3}
+  deathSFX: {fileID: 8300000, guid: e893efcb6592c9947b3fdb9c880cbe81, type: 3}
+  hitSFX: {fileID: 8300000, guid: 51860cd9bb14d724cae58e3f8ec0780c, type: 3}

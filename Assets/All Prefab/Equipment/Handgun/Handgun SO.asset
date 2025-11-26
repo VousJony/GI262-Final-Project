@@ -19,11 +19,12 @@ MonoBehaviour:
     attack: 25
     defense: 0
     critChance: 20
-    rpm: 60
+    rpm: 120
     angle: 0
     projectileSpeed: 20
     moveSpeed: 0
   projectilesPerShot: 1
   bulletPrefabOverride: {fileID: 9010501137127133766, guid: 8b5244dadcb250f4b96bebbcb01a97a2, type: 3}
+  isLoopingSFX: 0
   shootSFXOverride: {fileID: 8300000, guid: a5fd6e04e4e8b294fb2b90191d0a1cf6, type: 3}
   muzzleFlashVFX: {fileID: 0}
