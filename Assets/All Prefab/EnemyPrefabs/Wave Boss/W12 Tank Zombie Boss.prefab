@@ -246,6 +246,6 @@ MonoBehaviour:
   - itemPrefab: {fileID: 1149558649007329183, guid: 01ae4b320a506a246ba73e1122fe80ea, type: 3}
     weight: 10
   deathVFX: {fileID: 0}
-  hitVFX: {fileID: 0}
-  deathSFX: {fileID: 0}
-  hitSFX: {fileID: 0}
+  hitVFX: {fileID: 3350099676499569759, guid: 96d41f381fcaeae4c99ca4e45546fb72, type: 3}
+  deathSFX: {fileID: 8300000, guid: e893efcb6592c9947b3fdb9c880cbe81, type: 3}
+  hitSFX: {fileID: 8300000, guid: 51860cd9bb14d724cae58e3f8ec0780c, type: 3}
