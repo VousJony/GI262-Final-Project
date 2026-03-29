@@ -116,7 +116,7 @@ public class Enemy : MonoBehaviour
         if (_transform.position.y < deadZoneY)
         {
             // ถ้าผู้เล่นยังอยู่ ให้ทำดาเมจใส่ผู้เล่นด้วย
-            if (Character.instance != null) Character.instance.TakeDamage(attackDamage);
+            //if (Character.instance != null) Character.instance.TakeDamage(attackDamage);
             Die(false); // ตายแบบไม่มีเอฟเฟกต์/ของรางวัล
         }
     }

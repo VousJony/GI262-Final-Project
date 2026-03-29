@@ -53,6 +53,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Slider waveBar;
 
     private int wave = 0;
+    public int CurrentWave => wave; // [เพิ่มใหม่] เพื่อให้ Analytics ดึงไปใช้งานได้
+
     private int waveProgress = 0;
     private int totalEnemiesInWave = 0;
     #endregion
@@ -61,7 +63,7 @@ public class GameManager : MonoBehaviour
     public void StartGame()
     {
         // เตรียมผู้เล่น
-        Character.instance.SetUpNewGame();
+        if (Character.instance != null) Character.instance.SetUpNewGame();
 
         // เตรียม Wave
         wave = 0;
@@ -84,7 +86,7 @@ public class GameManager : MonoBehaviour
     {
         if (waveCoroutine != null) StopCoroutine(waveCoroutine);
 
-        EnemyManager.instance.ClearAllEnemies();
+        if (EnemyManager.instance != null) EnemyManager.instance.ClearAllEnemies();
 
         MapGenerator mapGen = FindFirstObjectByType<MapGenerator>();
         if (mapGen != null) mapGen.StopAndClear();

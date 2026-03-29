@@ -50,7 +50,6 @@ public class MenuManager : MonoBehaviour
 
     private void Update()
     {
-        // ตรวจจับปุ่ม ESC เพื่อ Pause
         if (Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThisFrame)
         {
             if (currentState == GameState.Playing || currentState == GameState.Paused)
@@ -60,14 +59,10 @@ public class MenuManager : MonoBehaviour
     #endregion
 
     #region State Management
-    /// <summary>
-    /// เปลี่ยนสถานะเกมและจัดการเปิด/ปิด Panel ที่เกี่ยวข้อง
-    /// </summary>
     public void SwitchState(GameState newState)
     {
         currentState = newState;
 
-        // ปิดทุก Panel ก่อน
         if (mainMenuPanel) mainMenuPanel.SetActive(false);
         if (pauseMenuPanel) pauseMenuPanel.SetActive(false);
         if (endMenuPanel) endMenuPanel.SetActive(false);
@@ -80,12 +75,12 @@ public class MenuManager : MonoBehaviour
                 if (mainMenuPanel) mainMenuPanel.SetActive(true);
                 UpdateMainMenuHighScore();
                 UpdateSliderValues();
-                Time.timeScale = 0f; // หยุดเวลา
+                Time.timeScale = 0f;
                 break;
 
             case GameState.Playing:
                 if (gameHUDPanel) gameHUDPanel.SetActive(true);
-                Time.timeScale = 1f; // เวลาเดินปกติ
+                Time.timeScale = 1f;
                 break;
 
             case GameState.Paused:
@@ -114,8 +109,23 @@ public class MenuManager : MonoBehaviour
         else if (currentState == GameState.Paused) SwitchState(GameState.Playing);
     }
 
-    public void TriggerGameOver() => SwitchState(GameState.GameOver);
-    public void TriggerVictory() => SwitchState(GameState.Victory);
+    public void TriggerGameOver()
+    {
+        SwitchState(GameState.GameOver);
+
+        // [Analytics] บันทึกเหตุการณ์ Game Over
+        if (AnalyticsManager.instance != null && GameManager.instance != null)
+            AnalyticsManager.instance.OnGameEnded(false, GameManager.instance.CurrentWave);
+    }
+
+    public void TriggerVictory()
+    {
+        SwitchState(GameState.Victory);
+
+        // [Analytics] บันทึกเหตุการณ์ Victory
+        if (AnalyticsManager.instance != null && GameManager.instance != null)
+            AnalyticsManager.instance.OnGameEnded(true, GameManager.instance.CurrentWave);
+    }
     #endregion
 
     #region UI Events (Buttons)
@@ -123,6 +133,9 @@ public class MenuManager : MonoBehaviour
     {
         SwitchState(GameState.Playing);
         if (GameManager.instance != null) GameManager.instance.StartGame();
+
+        // [Analytics] เริ่มเกมใหม่จากเมนูหลัก (ไม่ใช่การเล่นซ้ำ)
+        if (AnalyticsManager.instance != null) AnalyticsManager.instance.OnGameStarted(false);
     }
 
     public void OnResumeButton() => SwitchState(GameState.Playing);
@@ -135,6 +148,9 @@ public class MenuManager : MonoBehaviour
             GameManager.instance.StopAndResetGame();
             SwitchState(GameState.Playing);
             GameManager.instance.StartGame();
+
+            // [Analytics] กดปุ่มเล่นซ้ำ
+            if (AnalyticsManager.instance != null) AnalyticsManager.instance.OnGameStarted(true);
         }
     }
 
@@ -142,6 +158,23 @@ public class MenuManager : MonoBehaviour
     {
         if (GameManager.instance != null) GameManager.instance.StopAndResetGame();
         SwitchState(GameState.MainMenu);
+    }
+
+    /// <summary>
+    /// ออกจากเกม (ใช้ผูกกับปุ่ม Quit ในหน้า Main Menu)
+    /// </summary>
+    public void OnQuitButton()
+    {
+        Debug.Log("Quitting Game...");
+
+#if UNITY_EDITOR
+        // หยุด Play Mode ถ้ากำลังรันทดสอบใน Unity Editor
+        UnityEditor.EditorApplication.isPlaying = false;
+#else
+            // ปิดแอปพลิเคชันเมื่อ Build เป็นตัวเกมจริง (PC/Mobile)
+            // หมายเหตุ: สำหรับ WebGL คำสั่งนี้อาจจะไม่มีผลเบราว์เซอร์บางตัว ซึ่งเป็นข้อจำกัดของแพลตฟอร์ม WebGL ปกติ
+            Application.Quit();
+#endif
     }
     #endregion
 
@@ -154,15 +187,13 @@ public class MenuManager : MonoBehaviour
         if (pauseSfxSlider) pauseSfxSlider.onValueChanged.AddListener(OnSFXVolumeChanged);
     }
 
-    /// <summary>
-    /// อัปเดตค่า Slider ให้ตรงกับเสียงปัจจุบัน (สำคัญเมื่อกลับมาจากฉากอื่น)
-    /// </summary>
     private void UpdateSliderValues()
     {
+        if (FindAnyObjectByType<AudioListener>() == null) return;
+
         if (AudioManager.instance == null) return;
         float music = AudioManager.instance.GetMusicVolume();
         float sfx = AudioManager.instance.GetSFXVolume();
-
         if (mainMenuMusicSlider) mainMenuMusicSlider.value = music;
         if (mainMenuSfxSlider) mainMenuSfxSlider.value = sfx;
         if (pauseMusicSlider) pauseMusicSlider.value = music;
@@ -171,12 +202,12 @@ public class MenuManager : MonoBehaviour
 
     public void OnMusicVolumeChanged(float value)
     {
-        if (AudioManager.instance != null) AudioManager.instance.SetMusicVolume(value);
+         if (AudioManager.instance != null) AudioManager.instance.SetMusicVolume(value);
     }
 
     public void OnSFXVolumeChanged(float value)
     {
-        if (AudioManager.instance != null) AudioManager.instance.SetSFXVolume(value);
+         if (AudioManager.instance != null) AudioManager.instance.SetSFXVolume(value);
     }
     #endregion
 
@@ -187,9 +218,6 @@ public class MenuManager : MonoBehaviour
             mainMenuHighScoreText.text = "Best\nScore\n" + PlayerPrefs.GetInt("HighScore", 0);
     }
 
-    /// <summary>
-    /// บันทึก HighScore และแสดงผลคะแนนจบเกม
-    /// </summary>
     private void ProcessEndGameScore(bool isVictory)
     {
         int currentScore = (Character.instance != null) ? Character.instance.GetScore() : 0;
